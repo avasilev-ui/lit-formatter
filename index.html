@@ -47,18 +47,6 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    .page-title-logo-link {
-      display: flex;
-      align-items: center;
-      line-height: 0;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .page-title-logo-link:focus-visible {
-      outline: 2px solid var(--brand-purple-light);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
     .page-title-logo {
       height: 36px;
       width: auto;
@@ -320,10 +308,8 @@
 <body>
   <div class="wrap">
     <h1 class="page-title">
-      <a class="page-title-logo-link" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer" title="Открыть сайт PubMed" aria-label="Открыть сайт PubMed">
-        <img class="page-title-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Pubmed_logo.png" alt="PubMed" width="112" height="36" loading="lazy" decoding="async">
-      </a>
       Источники из PubMed
+      <img class="page-title-logo" src="assets/logo.png" alt="Логотип" width="36" height="36">
       <span class="page-title-signature">by Alex V</span>
     </h1>
     <p>На сайте PubMed у каждой статьи есть номер <b>PMID</b>. Вставь его сюда — программа сама подставит название, фамилию первого автора, год и журнал и оформит строку для списка литературы: <b>Название (Автор, Год)</b>.</p>
