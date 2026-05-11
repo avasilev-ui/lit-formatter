@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Форматирование ссылки</title>
+  <title>Источники из PubMed</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -63,39 +63,8 @@
       margin-top: 0;
       color: var(--brand-muted);
     }
-    .grid {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
     .journal-input {
       margin-top: 8px;
-    }
-    .pubmed-instruction {
-      display: grid;
-      gap: 8px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--brand-border);
-      border-radius: 12px;
-    }
-    .pubmed-instruction summary {
-      color: var(--brand-white);
-      cursor: pointer;
-      font-weight: 700;
-    }
-    .pubmed-instruction img {
-      width: 100%;
-      max-width: 620px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(147, 205, 254, 0.24);
-      display: block;
-    }
-    .pubmed-instruction-text {
-      margin: 0;
-      color: var(--brand-muted);
-      font-size: 13px;
     }
     label {
       font-weight: 600;
@@ -143,32 +112,6 @@
     }
     button:hover {
       background: var(--brand-purple-light);
-    }
-    .main-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-    .main-actions button {
-      margin-top: 8px;
-    }
-    .llm-btn {
-      background: var(--brand-blue);
-    }
-    .llm-btn:hover {
-      background: var(--brand-sky);
-      color: #111217;
-    }
-    .llm-btn:disabled {
-      background: #555665;
-      cursor: not-allowed;
-    }
-    .llm-status {
-      margin-top: 8px;
-      min-height: 18px;
-      color: var(--brand-muted);
-      font-size: 13px;
     }
     .out {
       margin-top: 18px;
@@ -317,6 +260,16 @@
       border: 1px solid rgba(41, 105, 255, 0.35);
       border-radius: 14px;
     }
+    .pmid-box--main {
+      margin-top: 14px;
+    }
+    .journal-label-pmid {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--brand-white);
+    }
     .pmid-box h2 {
       margin: 0 0 10px;
       font-size: 17px;
@@ -355,34 +308,26 @@
 <body>
   <div class="wrap">
     <h1 class="page-title">
-      Форматирование источника
+      Источники из PubMed
       <img class="page-title-logo" src="assets/logo.png" alt="Логотип" width="36" height="36">
       <span class="page-title-signature">by Alex V</span>
     </h1>
-    <p>Вставь данные и получи строку в формате: <b>Название (Автор, Год)</b>.</p>
+    <p>На сайте PubMed у каждой статьи есть номер <b>PMID</b>. Вставь его сюда — программа сама подставит название, фамилию первого автора, год и журнал и оформит строку для списка литературы: <b>Название (Автор, Год)</b>.</p>
 
-    <div class="grid">
-      <label for="rawInput">Вставь текстом (как есть)</label>
-      <details class="pubmed-instruction">
-        <summary>Как копировать с PubMed</summary>
-        <img src="assets/pubmed-copy-example.png" alt="Пример копирования текста с сайта PubMed">
-        <p class="pubmed-instruction-text">Копируй с сайта PubMed, как указано на изображении.</p>
-      </details>
-      <textarea id="rawInput" placeholder="Iodine in dairy milk: Sources, concentrations and importance to human health; Reijden; 2017"></textarea>
-      <input id="journalInput" class="journal-input" type="text" placeholder="Название журнала для поиска квартиля (например: Nutrients)">
+    <div class="pmid-box pmid-box--main">
+      <h2>Подтянуть из PubMed</h2>
+      <p class="hint" style="margin-top: 0">Можно ввести один PMID или несколько через запятую. Программа обращается к PubMed через небольшой сервер на твоём компьютере: запусти файл <code>start-server.bat</code> в этой папке (или в терминале команду <code>npm start</code>) и открой страницу по ссылке, которую он покажет — обычно это адрес на localhost.</p>
+      <div class="pmid-row">
+        <input id="pmidInput" type="text" inputmode="numeric" placeholder="Например: 35504917 или 123, 456, 789" autocomplete="off">
+        <button id="pmidBtn" type="button" class="pmid-btn">Подтянуть из PubMed</button>
+      </div>
+      <div id="pmidStatus" class="pmid-status"></div>
+      <label for="journalInput" class="journal-label-pmid">Журнал для таблицы квартилей (необязательно)</label>
+      <input id="journalInput" class="journal-input" type="text" placeholder="Если оставить пустым, возьмётся название журнала из PubMed">
     </div>
-
-    <div class="hint">Можно вставлять: <b>название; авторы; год</b>, по строкам или через тире. Например:<br>Title - Reijden - 2017</div>
-
-    <div class="main-actions">
-      <button id="formatBtn" type="button">Сформатировать</button>
-      <button id="llmBtn" type="button" class="llm-btn">Разобрать через LLM</button>
-    </div>
-    <div id="llmStatus" class="llm-status"></div>
-    <div class="hint">Пример результата: Iodine in dairy milk: Sources, concentrations and importance to human health (Reijden, 2017)</div>
 
     <div class="manual-box">
-      <h2>Ручной ввод</h2>
+      <h2>Если нужно ввести вручную</h2>
       <div class="manual-row">
         <input id="manualTitle" type="text" placeholder="Название статьи">
         <input id="manualAuthor" type="text" placeholder="Автор">
@@ -391,16 +336,6 @@
       <input id="manualJournal" class="manual-journal" type="text" placeholder="Журнал (для определения квартиля)">
       <button id="manualBtn" type="button" class="manual-btn">Добавить вручную</button>
       <div class="hint">Пример: Severe acute respiratory syndrome coronavirus-2 and the deduction effect of angiotensin-converting enzyme 2 in pregnancy (Chang, 2020)</div>
-    </div>
-
-    <div class="pmid-box">
-      <h2>По PMID из PubMed</h2>
-      <p class="hint" style="margin-top: 0">Введи номер статьи в PubMed (PMID). Программа подставит название, фамилию первого автора, год и журнал — как у остальных источников. <b>Сначала запусти сервер</b>: дважды щёлкни по файлу <code>start-server.bat</code> в этой папке (или в терминале команда <code>npm start</code>), дождись открытия страницы — без этого адрес localhost не откроется.</p>
-      <div class="pmid-row">
-        <input id="pmidInput" type="text" inputmode="numeric" placeholder="Например: 35504917 или несколько через запятую" autocomplete="off">
-        <button id="pmidBtn" type="button" class="pmid-btn">Подтянуть по PMID</button>
-      </div>
-      <div id="pmidStatus" class="pmid-status"></div>
     </div>
 
     <div id="resultsBox" class="results hidden">
@@ -430,11 +365,7 @@
   </div>
 
   <script>
-    const rawInput = document.getElementById("rawInput");
     const journalInput = document.getElementById("journalInput");
-    const button = document.getElementById("formatBtn");
-    const llmBtn = document.getElementById("llmBtn");
-    const llmStatus = document.getElementById("llmStatus");
     const resultsBox = document.getElementById("resultsBox");
     const resultsList = document.getElementById("resultsList");
     const copyBtn = document.getElementById("copyBtn");
@@ -569,252 +500,6 @@
       csvStatus.textContent = `Не найден ни один из файлов: ${csvCandidates.join(", ")}. ${hintServer}`;
     }
 
-    function sanitizeText(rawText) {
-      return rawText
-        .replace(/https?:\/\/\S+/gi, " ")
-        .replace(/\bdoi:\s*\S+/gi, " ")
-        .replace(/\bwww\.\S+/gi, " ")
-        .replace(/[“”"«»]/g, " ")
-        .replace(/[()[\]{}]/g, " ")
-        .replace(/[^\S\r\n]+/g, " ")
-        .replace(/\r/g, "\n");
-    }
-
-    function isLikelyTitleLine(line) {
-      if (!line) return false;
-      if (line.length < 15 || line.length > 220) return false;
-      if (/\b(doi|http|www|vol\.?|issue|pages?|pp\.?|journal|received|accepted|copyright)\b/i.test(line)) return false;
-      if (/\d{4}\s*;\s*\d+/i.test(line)) return false;
-
-      const letters = (line.match(/[A-Za-zА-Яа-яЁё]/g) || []).length;
-      const digits = (line.match(/\d/g) || []).length;
-      return letters > 10 && digits < 8;
-    }
-
-    function pickTitleFromText(text) {
-      const lines = text
-        .split("\n")
-        .map((line) => normalizeSpaces(line.replace(/^[\W_]+|[\W_]+$/g, "")))
-        .filter(Boolean);
-
-      // Prefer the longest valid early line - in article fragments title is often near top.
-      const candidates = lines
-        .map((line, index) => ({ line, index }))
-        .filter((item) => isLikelyTitleLine(item.line))
-        .map((item) => {
-          let score = item.line.length;
-          if (item.index <= 6) score += 30;
-          if (/:/.test(item.line)) score += 8;
-          if (/^[A-ZА-Я]/.test(item.line)) score += 5;
-          return { ...item, score };
-        })
-        .sort((a, b) => b.score - a.score);
-
-      return candidates[0]?.line || "";
-    }
-
-    function extractSurname(authorsText) {
-      const clean = normalizeSpaces(authorsText)
-        .replace(/\d+\s*[,*-]*/g, " ")
-        .replace(/\*/g, " ");
-      if (!clean) return "";
-
-      // Multiple authors: take first meaningful fragment.
-      const firstAuthorChunk = clean.split(/;|,| and | & /i)[0].trim();
-      const tokens = firstAuthorChunk.match(/[\p{L}-]+/gu) || [];
-      return tokens.length ? tokens[tokens.length - 1] : firstAuthorChunk;
-    }
-
-    function isLikelyAuthorLine(line) {
-      if (!line) return false;
-      if (/\b(doi|pmid|pmcid|abstract|review|full text links)\b/i.test(line)) return false;
-      const words = line.match(/[\p{L}-]+/gu) || [];
-      if (words.length < 2 || words.length > 12) return false;
-      return /^[A-ZА-Я][a-zа-яё-]+(?:\s+[A-ZА-Я][a-zа-яё-]+)+/u.test(line);
-    }
-
-    function pickYear(text) {
-      const matches = [...text.matchAll(/\b(19\d{2}|20\d{2})\b/g)];
-      if (!matches.length) return "";
-
-      const currentYear = new Date().getFullYear();
-      const plausible = matches.filter((m) => Number(m[1]) <= currentYear + 1);
-      return (plausible[0] || matches[0])[1];
-    }
-
-    function pickAuthorFromContext(text, year) {
-      if (!year) return "";
-
-      const yearIndex = text.indexOf(year);
-      if (yearIndex === -1) return "";
-
-      const start = Math.max(0, yearIndex - 140);
-      const end = Math.min(text.length, yearIndex + 60);
-      const context = normalizeSpaces(text.slice(start, end));
-
-      // Pattern: "Lastname, A. B." or "Lastname A."
-      const directMatch = context.match(/\b([A-ZА-Я][a-zа-яё-]{2,})(?:,\s*[A-ZА-Я]\.)?(?:\s*[A-ZА-Я]\.)?/);
-      if (directMatch) return directMatch[1];
-
-      // Pattern: "A. B. Lastname"
-      const reverseMatch = context.match(/\b(?:[A-ZА-Я]\.\s*){1,3}([A-ZА-Я][a-zа-яё-]{2,})\b/);
-      if (reverseMatch) return reverseMatch[1];
-
-      // Last capitalized token before year.
-      const beforeYear = normalizeSpaces(text.slice(0, yearIndex));
-      const tokenMatch = beforeYear.match(/([A-ZА-Я][a-zа-яё-]{2,})[^\w]*$/);
-      return tokenMatch ? tokenMatch[1] : "";
-    }
-
-    function pickAuthorNearTitle(text, title) {
-      if (!title) return "";
-
-      const lines = text
-        .split("\n")
-        .map((line) => normalizeSpaces(line))
-        .filter(Boolean);
-
-      const titleIndex = lines.findIndex((line) => line.includes(title) || title.includes(line));
-      if (titleIndex === -1) return "";
-
-      const blockedLinePattern = /\b(author information|article notes|copyright|license|abstract|pmid|pmcid|doi|front physiol)\b/i;
-
-      // In many article snippets, authors line follows title directly.
-      const nearby = lines.slice(titleIndex + 1, titleIndex + 6);
-      const best = nearby
-        .filter((line) => !blockedLinePattern.test(line))
-        .map((line) => {
-          let score = 0;
-          if (line.includes(",")) score += 8;
-          if ((line.match(/[\p{L}]+/gu) || []).length >= 4) score += 6;
-          if (/\d/.test(line)) score += 2; // affiliations like "1,*" are common in author lines
-          if (/^[\p{Lu}]/u.test(line)) score += 2;
-          return { line, score };
-        })
-        .sort((a, b) => b.score - a.score)[0];
-
-      return best ? extractSurname(best.line) : "";
-    }
-
-    function parseLabeledReference(rawText) {
-      const lines = rawText
-        .split("\n")
-        .map((line) => normalizeSpaces(line))
-        .filter(Boolean);
-
-      if (!lines.length) return null;
-
-      let title = "";
-      let authors = "";
-      let year = "";
-
-      for (const line of lines) {
-        if (!title) {
-          const titleMatch = line.match(/^(.*?)\s*-\s*(?:название|title)\b/i);
-          if (titleMatch?.[1]) title = normalizeSpaces(titleMatch[1]);
-        }
-
-        if (!authors) {
-          const authorMatch = line.match(/^(.*?)\s*-\s*(?:автор|author)\b/i);
-          if (authorMatch?.[1]) authors = extractSurname(authorMatch[1]);
-        }
-
-        if (!year) {
-          const yearTagMatch = line.match(/\b(?:год|year)\b[:\s-]*.*?\b(19\d{2}|20\d{2})\b/i);
-          if (yearTagMatch?.[1]) year = yearTagMatch[1];
-        }
-      }
-
-      // If year was not explicitly tagged, take first plausible year from text.
-      if (!year) year = pickYear(normalizeSpaces(rawText));
-
-      if (title && authors && year) {
-        return { title, authors, year };
-      }
-      return null;
-    }
-
-    function parseRawReference(rawText) {
-      const sanitized = sanitizeText(rawText);
-      const clean = normalizeSpaces(sanitized);
-      if (!clean) {
-        return null;
-      }
-
-      const labeled = parseLabeledReference(rawText);
-      if (labeled) {
-        return labeled;
-      }
-
-      // Already formatted: Title (Authors, 2017)
-      const readyPattern = /^(.*)\((.*),\s*(\d{4})\)\s*$/;
-      const readyMatch = clean.match(readyPattern);
-      if (readyMatch) {
-        return {
-          title: normalizeSpaces(readyMatch[1]),
-          authors: extractSurname(readyMatch[2]),
-          year: readyMatch[3]
-        };
-      }
-
-      const separators = /;|\||\n|\s[-–—]\s/;
-      const parts = clean
-        .split(separators)
-        .map((part) => normalizeSpaces(part))
-        .filter(Boolean);
-
-      if (parts.length >= 3) {
-        return {
-          title: parts[0],
-          authors: extractSurname(parts[1]),
-          year: parts[2]
-        };
-      }
-
-      // Fallback format: "Title, Authors, 2017"
-      const yearMatch = clean.match(/(\d{4})\s*$/);
-      if (yearMatch) {
-        const year = yearMatch[1];
-        const withoutYear = normalizeSpaces(clean.replace(/,\s*\d{4}\s*$/, ""));
-        const lastCommaIndex = withoutYear.lastIndexOf(",");
-
-        if (lastCommaIndex > 0) {
-          return {
-            title: normalizeSpaces(withoutYear.slice(0, lastCommaIndex)),
-            authors: extractSurname(withoutYear.slice(lastCommaIndex + 1)),
-            year
-          };
-        }
-      }
-
-      // Fallback: "Title Reijden 2017" (last two tokens author/year)
-      const looseMatch = clean.match(/^(.*)\s+([A-Za-zА-Яа-яЁё-]+)\s+(\d{4})$/);
-      if (looseMatch) {
-        return {
-          title: normalizeSpaces(looseMatch[1]),
-          authors: extractSurname(looseMatch[2]),
-          year: looseMatch[3]
-        };
-      }
-
-      // Noisy text extraction.
-      const title = pickTitleFromText(sanitized);
-      const year = pickYear(clean);
-      const authorFromTitleArea = pickAuthorNearTitle(sanitized, title);
-      const authorFromYearContext = extractSurname(pickAuthorFromContext(clean, year));
-      const authors = authorFromTitleArea || authorFromYearContext;
-
-      if (title && authors && year) {
-        return { title, authors, year };
-      }
-
-      return {
-        title: title || "Название не найдено",
-        authors: authors || "Автор не найден",
-        year: year || "Год не найден"
-      };
-    }
-
     function formatReference(reference) {
       if (!reference) {
         return "Не удалось распознать. Пример: Название; Автор; 2017";
@@ -827,176 +512,9 @@
       return `${safeTitle} (${safeAuthors}, ${safeYear})`;
     }
 
-    function setLlmStatus(message) {
-      llmStatus.textContent = message;
-    }
-
     function setPmidStatus(message) {
       pmidStatus.textContent = message;
     }
-
-    function validateLlmReference(reference) {
-      return reference.title && reference.author && reference.year;
-    }
-
-    function isLikelyPubMedJournalStart(line, nextLine) {
-      const cleanLine = normalizeSpaces(line.replace(/^\.+/, ""));
-      if (!cleanLine || cleanLine.length > 80) return false;
-      if (/\d/.test(cleanLine)) return false;
-      if (!/[A-Za-zА-Яа-яЁё]/.test(cleanLine)) return false;
-      return /\b(19\d{2}|20\d{2})\b|\bdoi\b/i.test(nextLine || "");
-    }
-
-    function splitPubMedBlocks(rawText) {
-      const lines = rawText
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean);
-
-      const startIndexes = [];
-      for (let index = 0; index < lines.length - 1; index += 1) {
-        if (isLikelyPubMedJournalStart(lines[index], lines[index + 1])) {
-          startIndexes.push(index);
-        }
-      }
-
-      if (!startIndexes.length) return [];
-
-      return startIndexes.map((startIndex, position) => {
-        const endIndex = startIndexes[position + 1] || lines.length;
-        return lines.slice(startIndex, endIndex).join("\n");
-      });
-    }
-
-    function splitRawEntries(rawText) {
-      const text = rawText.trim();
-      if (!text) return [];
-
-      const pubMedBlocks = splitPubMedBlocks(text);
-      if (pubMedBlocks.length) {
-        return pubMedBlocks;
-      }
-
-      // A single labeled article block should stay a single entry.
-      if (/\b(?:название|title|автор|author|год|year)\b/i.test(text)) {
-        return [text];
-      }
-
-      // PubMed-like multiline fragments should stay a single entry:
-      // journal/year line + title line + authors line.
-      const rawLines = text
-        .split("\n")
-        .map((line) => normalizeSpaces(line))
-        .filter(Boolean);
-      if (rawLines.length >= 2 && rawLines.length <= 6) {
-        const hasYearOrDoi = rawLines.some((line) => /\b(19\d{2}|20\d{2})\b/.test(line) || /\bdoi\b/i.test(line));
-        const hasTitleLike = rawLines.some((line) => isLikelyTitleLine(line));
-        const hasAuthorLike = rawLines.some((line) => /,/.test(line) && /[A-ZА-Я][a-zа-яё-]+\s+[A-ZА-Я]/.test(line)) ||
-          rawLines.some((line) => isLikelyAuthorLine(line));
-        if (hasYearOrDoi && hasTitleLike && hasAuthorLike) {
-          return [text];
-        }
-      }
-
-      // JSON array support: ["Title; Author; 2017", "..."]
-      if (text.startsWith("[") && text.endsWith("]")) {
-        try {
-          const parsed = JSON.parse(text);
-          if (Array.isArray(parsed)) {
-            return parsed
-              .map((item) => (typeof item === "string" ? item : String(item)))
-              .map((item) => item.trim())
-              .filter(Boolean);
-          }
-        } catch (_) {
-          // Fallback for non-JSON arrays (e.g. single quotes).
-          const quotedItems = [...text.matchAll(/['"]([^'"]+)['"]/g)]
-            .map((match) => normalizeSpaces(match[1]))
-            .filter(Boolean);
-          if (quotedItems.length) return quotedItems;
-        }
-      }
-
-      // Multiline paste: each non-empty line is a separate source.
-      const lines = text
-        .split("\n")
-        .map((line) => normalizeSpaces(line.replace(/^\s*(?:[-*]|\d+[.)])\s*/, "")))
-        .filter(Boolean);
-
-      return lines.length ? lines : [text];
-    }
-
-    button.addEventListener("click", () => {
-      const entries = splitRawEntries(rawInput.value);
-      const journalName = normalizeSpaces(journalInput.value);
-
-      if (!entries.length) {
-        addResultItem("Не удалось распознать. Пример: Название; Автор; 2017", journalName);
-        return;
-      }
-
-      entries.forEach((entry) => {
-        addResultItem(formatReference(parseRawReference(entry)), journalName);
-      });
-
-      rawInput.value = "";
-      rawInput.focus();
-    });
-
-    llmBtn.addEventListener("click", async () => {
-      const text = normalizeSpaces(rawInput.value);
-      if (!text) {
-        setLlmStatus("Сначала вставь текст из PubMed.");
-        rawInput.focus();
-        return;
-      }
-
-      llmBtn.disabled = true;
-      setLlmStatus("LLM разбирает текст PubMed...");
-
-      try {
-        const response = await fetch("/api/parse-pubmed", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ text: rawInput.value })
-        });
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Не удалось разобрать текст через LLM.");
-        }
-
-        if (!validateLlmReference(data)) {
-          setLlmStatus("LLM не нашла все поля. Можно заполнить вручную ниже.");
-          manualTitle.value = data.title || "";
-          manualAuthor.value = data.author || "";
-          manualYear.value = data.year || "";
-          manualJournal.value = data.journal || "";
-          return;
-        }
-
-        const journalName = normalizeSpaces(journalInput.value) || data.journal || "";
-        addResultItem(
-          formatReference({
-            title: data.title,
-            authors: data.author,
-            year: data.year
-          }),
-          journalName
-        );
-
-        setLlmStatus(`Готово. Журнал: ${journalName || "не найден"}.`);
-        rawInput.value = "";
-        journalInput.value = "";
-        rawInput.focus();
-      } catch (error) {
-        setLlmStatus(error.message || "Ошибка LLM. Проверь, что сервер запущен и `.env` заполнен.");
-      } finally {
-        llmBtn.disabled = false;
-      }
-    });
 
     manualBtn.addEventListener("click", () => {
       const title = normalizeSpaces(manualTitle.value);
