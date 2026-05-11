@@ -7,24 +7,25 @@
   <style>
     :root {
       color-scheme: light dark;
-      --brand-bg: #212226;
-      --brand-panel: #2a2b31;
-      --brand-panel-soft: #303139;
-      --brand-purple: #6f3ad1;
-      --brand-purple-light: #a17ff0;
-      --brand-blue: #2969ff;
-      --brand-pink: #a15c9b;
-      --brand-sky: #93cdfe;
+      /* Палитра в духе fizikl.org (main.css темы): акцент #9469f3, глубокий #452681, панели #292a2c */
+      --brand-bg: #1f2024;
+      --brand-panel: #292a2c;
+      --brand-panel-soft: #32353a;
+      --brand-purple: #9469f3;
+      --brand-purple-light: #b8a0f6;
+      --brand-blue: #452681;
+      --brand-pink: #6b3d8c;
+      --brand-sky: #cdbcf7;
       --brand-white: #ffffff;
-      --brand-muted: #c7c7d1;
-      --brand-border: rgba(255, 255, 255, 0.12);
+      --brand-muted: #bdbdbd;
+      --brand-border: rgba(255, 255, 255, 0.1);
     }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(111, 58, 209, 0.35), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(41, 105, 255, 0.22), transparent 30%),
+        radial-gradient(circle at top left, rgba(148, 105, 243, 0.28), transparent 38%),
+        radial-gradient(circle at bottom right, rgba(69, 38, 129, 0.32), transparent 34%),
         var(--brand-bg);
       color: var(--brand-white);
     }
@@ -32,7 +33,7 @@
       max-width: 760px;
       margin: 40px auto;
       padding: 24px;
-      background: rgba(42, 43, 49, 0.94);
+      background: rgba(41, 42, 44, 0.96);
       border: 1px solid var(--brand-border);
       border-radius: 18px;
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
@@ -78,17 +79,17 @@
       border-radius: 8px;
       padding: 10px 12px;
       font-size: 15px;
-      background: #18191d;
+      background: #242529;
       border-color: var(--brand-border);
       color: var(--brand-white);
     }
     textarea::placeholder,
     input::placeholder {
-      color: #8e90a0;
+      color: #9a9ca3;
     }
     textarea:focus,
     input:focus {
-      outline: 2px solid rgba(161, 127, 240, 0.45);
+      outline: 2px solid rgba(148, 105, 243, 0.45);
       border-color: var(--brand-purple-light);
     }
     textarea {
@@ -152,14 +153,14 @@
       background: var(--brand-blue);
     }
     .manual-btn:hover {
-      background: var(--brand-sky);
-      color: #111217;
+      background: var(--brand-purple);
+      color: #fff;
     }
     .results {
       margin-top: 20px;
       padding: 16px 20px;
-      background: rgba(111, 58, 209, 0.14);
-      border: 1px solid rgba(161, 127, 240, 0.38);
+      background: rgba(148, 105, 243, 0.12);
+      border: 1px solid rgba(148, 105, 243, 0.35);
       border-radius: 14px;
       box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
     }
@@ -184,8 +185,8 @@
     .quartile-box {
       margin-top: 18px;
       padding: 16px 20px;
-      background: rgba(41, 105, 255, 0.13);
-      border: 1px solid rgba(147, 205, 254, 0.42);
+      background: rgba(69, 38, 129, 0.22);
+      border: 1px solid rgba(148, 105, 243, 0.38);
       border-radius: 14px;
     }
     .quartile-box h2 {
@@ -204,20 +205,20 @@
     .quartile-table {
       width: 100%;
       border-collapse: collapse;
-      background: #18191d;
+      background: #242529;
       border-radius: 8px;
       overflow: hidden;
     }
     .quartile-table th,
     .quartile-table td {
-      border: 1px solid rgba(147, 205, 254, 0.24);
+      border: 1px solid rgba(148, 105, 243, 0.26);
       padding: 8px;
       text-align: left;
       font-size: 14px;
       vertical-align: top;
     }
     .quartile-table th {
-      background: rgba(147, 205, 254, 0.16);
+      background: rgba(148, 105, 243, 0.14);
       color: var(--brand-sky);
       font-weight: 700;
     }
@@ -234,8 +235,8 @@
       background: var(--brand-blue);
     }
     .copy-btn:hover {
-      background: var(--brand-sky);
-      color: #111217;
+      background: var(--brand-purple);
+      color: #fff;
     }
     .undo-btn {
       background: var(--brand-pink);
@@ -256,8 +257,8 @@
     .pmid-box {
       margin-top: 18px;
       padding: 14px;
-      background: rgba(41, 105, 255, 0.08);
-      border: 1px solid rgba(41, 105, 255, 0.35);
+      background: rgba(69, 38, 129, 0.14);
+      border: 1px solid rgba(148, 105, 243, 0.32);
       border-radius: 14px;
     }
     .pmid-box--main {
@@ -290,8 +291,8 @@
       margin-top: 0;
     }
     .pmid-btn:hover {
-      background: var(--brand-sky);
-      color: #111217;
+      background: var(--brand-purple);
+      color: #fff;
     }
     .pmid-btn:disabled {
       background: #555665;
