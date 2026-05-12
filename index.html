@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Источники из PubMed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light dark;
+      /* Типографика как в docs/brandbook-template.html (Neon Labs design system) */
+      --font-sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Fira Code", "SF Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
       /* Палитра в духе fizikl.org (main.css темы): акцент #9469f3, глубокий #452681, панели #292a2c */
       --brand-bg: #1f2024;
       --brand-panel: #292a2c;
@@ -22,7 +28,11 @@
     }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: var(--font-sans);
+      font-weight: 450;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
       background:
         radial-gradient(circle at top left, rgba(148, 105, 243, 0.28), transparent 38%),
         radial-gradient(circle at bottom right, rgba(69, 38, 129, 0.32), transparent 34%),
@@ -40,7 +50,10 @@
     }
     h1 {
       margin-top: 0;
-      font-size: 24px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
     }
     .page-title {
       display: flex;
@@ -49,10 +62,13 @@
       gap: 10px;
     }
     .page-title-logo {
-      height: 36px;
+      height: 38px;
       width: auto;
       display: block;
       flex-shrink: 0;
+      border-radius: 10px;
+      object-fit: contain;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
     }
     .page-title-signature {
       color: var(--brand-muted);
@@ -76,12 +92,14 @@
       width: 100%;
       box-sizing: border-box;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 10px 12px;
+      border-radius: 10px;
+      padding: 11px 14px;
       font-size: 15px;
+      font-family: var(--font-sans);
       background: #242529;
       border-color: var(--brand-border);
       color: var(--brand-white);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     textarea::placeholder,
     input::placeholder {
@@ -106,13 +124,43 @@
       background: var(--brand-purple);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 15px;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      letter-spacing: 0.01em;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      line-height: 1.2;
+      transition: background-color 0.22s ease, transform 0.14s ease, box-shadow 0.22s ease, opacity 0.2s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
     }
-    button:hover {
+    button:hover:not(:disabled) {
       background: var(--brand-purple-light);
+      box-shadow: 0 4px 16px rgba(148, 105, 243, 0.35);
+    }
+    button:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+    button:disabled {
+      opacity: 0.72;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-ico {
+      display: inline-flex;
+      flex-shrink: 0;
+      color: inherit;
+      opacity: 0.95;
+    }
+    .btn-ico svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      display: block;
     }
     .out {
       margin-top: 18px;
@@ -120,7 +168,9 @@
       border: 1px dashed var(--brand-purple-light);
       border-radius: 8px;
       background: var(--brand-panel-soft);
-      font-family: "Courier New", monospace;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 450;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -136,10 +186,28 @@
       border: 1px solid var(--brand-border);
       border-radius: 14px;
     }
-    .manual-box h2 {
+    .manual-box h2,
+    .pmid-box h2,
+    .results h2,
+    .quartile-box h2 {
       margin: 0 0 10px;
-      font-size: 17px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
       color: var(--brand-white);
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+    .section-ico {
+      display: inline-flex;
+      color: var(--brand-purple-light);
+      flex-shrink: 0;
+    }
+    .section-ico svg {
+      width: 1.35rem;
+      height: 1.35rem;
+      display: block;
     }
     .manual-row {
       display: grid;
@@ -164,11 +232,6 @@
       border-radius: 14px;
       box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
     }
-    .results h2 {
-      margin: 0 0 10px;
-      font-size: 17px;
-      color: var(--brand-white);
-    }
     .results ol {
       margin: 0;
       padding-left: 22px;
@@ -176,7 +239,9 @@
       gap: 6px;
     }
     .results li {
-      font-family: "Courier New", monospace;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 450;
       word-break: break-word;
     }
     .results.hidden {
@@ -191,8 +256,6 @@
     }
     .quartile-box h2 {
       margin: 0 0 8px;
-      font-size: 17px;
-      color: var(--brand-white);
     }
     .quartile-box.hidden {
       display: none;
@@ -212,10 +275,16 @@
     .quartile-table th,
     .quartile-table td {
       border: 1px solid rgba(148, 105, 243, 0.26);
-      padding: 8px;
+      padding: 10px 11px;
       text-align: left;
       font-size: 14px;
+      font-family: var(--font-sans);
       vertical-align: top;
+    }
+    .quartile-table td:first-child {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 450;
     }
     .quartile-table th {
       background: rgba(148, 105, 243, 0.14);
@@ -271,11 +340,6 @@
       font-size: 14px;
       color: var(--brand-white);
     }
-    .pmid-box h2 {
-      margin: 0 0 10px;
-      font-size: 17px;
-      color: var(--brand-white);
-    }
     .pmid-row {
       display: flex;
       flex-wrap: wrap;
@@ -304,6 +368,16 @@
       font-size: 13px;
       color: var(--brand-muted);
     }
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      font-weight: 500;
+      padding: 0.15em 0.45em;
+      border-radius: 6px;
+      background: rgba(148, 105, 243, 0.12);
+      border: 1px solid rgba(148, 105, 243, 0.22);
+      color: var(--brand-sky);
+    }
   </style>
 </head>
 <body>
@@ -316,11 +390,21 @@
     <p>На сайте PubMed у каждой статьи есть номер <b>PMID</b>. Вставь его сюда — программа сама подставит название, фамилию первого автора, год и журнал и оформит строку для списка литературы: <b>Название (Автор, Год)</b>.</p>
 
     <div class="pmid-box pmid-box--main">
-      <h2>Подтянуть из PubMed</h2>
+      <h2>
+        <span class="section-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 21h14a2 2 0 0 0 2-2v-3H3v3a2 2 0 0 0 2 2Z"/></svg>
+        </span>
+        Подтянуть из PubMed
+      </h2>
       <p class="hint" style="margin-top: 0">Можно ввести один PMID или несколько через запятую. Программа обращается к PubMed через небольшой сервер на твоём компьютере: запусти файл <code>start-server.bat</code> в этой папке (или в терминале команду <code>npm start</code>) и открой страницу по ссылке, которую он покажет — обычно это адрес на localhost.</p>
       <div class="pmid-row">
         <input id="pmidInput" type="text" inputmode="numeric" placeholder="Например: 35504917 или 123, 456, 789" autocomplete="off">
-        <button id="pmidBtn" type="button" class="pmid-btn">Подтянуть из PubMed</button>
+        <button id="pmidBtn" type="button" class="pmid-btn">
+          <span class="btn-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M5 21h14a2 2 0 0 0 2-2v-3H3v3a2 2 0 0 0 2 2Z"/></svg>
+          </span>
+          <span class="btn-text">Подтянуть из PubMed</span>
+        </button>
       </div>
       <div id="pmidStatus" class="pmid-status"></div>
       <label for="journalInput" class="journal-label-pmid">Журнал для таблицы квартилей (необязательно)</label>
@@ -328,29 +412,64 @@
     </div>
 
     <div class="manual-box">
-      <h2>Если нужно ввести вручную</h2>
+      <h2>
+        <span class="section-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></svg>
+        </span>
+        Если нужно ввести вручную
+      </h2>
       <div class="manual-row">
         <input id="manualTitle" type="text" placeholder="Название статьи">
         <input id="manualAuthor" type="text" placeholder="Автор">
         <input id="manualYear" type="text" placeholder="Год">
       </div>
       <input id="manualJournal" class="manual-journal" type="text" placeholder="Журнал (для определения квартиля)">
-      <button id="manualBtn" type="button" class="manual-btn">Добавить вручную</button>
+      <button id="manualBtn" type="button" class="manual-btn">
+        <span class="btn-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </span>
+        <span class="btn-text">Добавить вручную</span>
+      </button>
       <div class="hint">Пример: Severe acute respiratory syndrome coronavirus-2 and the deduction effect of angiotensin-converting enzyme 2 in pregnancy (Chang, 2020)</div>
     </div>
 
     <div id="resultsBox" class="results hidden">
-      <h2>Список источников</h2>
+      <h2>
+        <span class="section-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+        </span>
+        Список источников
+      </h2>
       <ol id="resultsList"></ol>
       <div class="results-actions">
-        <button id="copyBtn" type="button" class="copy-btn">Скопировать всё</button>
-        <button id="undoBtn" type="button" class="undo-btn">Удалить последнюю</button>
-        <button id="clearBtn" type="button" class="clear-btn">Очистить список</button>
+        <button id="copyBtn" type="button" class="copy-btn">
+          <span class="btn-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          </span>
+          <span class="btn-text">Скопировать всё</span>
+        </button>
+        <button id="undoBtn" type="button" class="undo-btn">
+          <span class="btn-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+          </span>
+          <span class="btn-text">Удалить последнюю</span>
+        </button>
+        <button id="clearBtn" type="button" class="clear-btn">
+          <span class="btn-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </span>
+          <span class="btn-text">Очистить список</span>
+        </button>
       </div>
     </div>
 
     <div id="quartileBox" class="quartile-box hidden">
-      <h2>Квартиль журнала</h2>
+      <h2>
+        <span class="section-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16v-5"/><path d="M17 16v-3"/></svg>
+        </span>
+        Квартиль журнала
+      </h2>
       <p id="csvStatus" class="quartile-status">Загружаю CSV с квартилями...</p>
       <table class="quartile-table">
         <thead>
@@ -370,6 +489,7 @@
     const resultsBox = document.getElementById("resultsBox");
     const resultsList = document.getElementById("resultsList");
     const copyBtn = document.getElementById("copyBtn");
+    const copyBtnLabel = copyBtn.querySelector(".btn-text");
     const clearBtn = document.getElementById("clearBtn");
     const undoBtn = document.getElementById("undoBtn");
     const manualTitle = document.getElementById("manualTitle");
@@ -604,11 +724,13 @@
 
       try {
         await navigator.clipboard.writeText(text);
-        copyBtn.textContent = "Скопировано ✓";
+        if (copyBtnLabel) copyBtnLabel.textContent = "Скопировано ✓";
       } catch (_) {
-        copyBtn.textContent = "Не удалось скопировать";
+        if (copyBtnLabel) copyBtnLabel.textContent = "Не удалось скопировать";
       }
-      setTimeout(() => (copyBtn.textContent = "Скопировать всё"), 1500);
+      setTimeout(() => {
+        if (copyBtnLabel) copyBtnLabel.textContent = "Скопировать всё";
+      }, 1500);
     });
 
     clearBtn.addEventListener("click", () => {
